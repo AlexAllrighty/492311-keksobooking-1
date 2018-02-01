@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Александр Панасюк](https://up.htmlacademy.ru/javascript/12/user/492311).
-* Наставник: `Неизвестно`.
+* Наставник: ` Неизвестно`.
 
 ---
 
