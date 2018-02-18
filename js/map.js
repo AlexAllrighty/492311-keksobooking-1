@@ -18,6 +18,16 @@ var mapFilterContainer = document.querySelector('.map__filters-container');
 var mapPinMainPositionX;
 var mapPinMainPositionY;
 var inputAddress = document.querySelector('#address');
+var noticeTitle = noticeForm.querySelector('#title');
+var noticePrice = noticeForm.querySelector('#price');
+var noticeType = noticeForm.querySelector('#type');
+var noticeCheckIn = noticeForm.querySelector('#timein');
+var noticeCheckOut = noticeForm.querySelector('#timeout');
+var noticeGuests = noticeForm.querySelector('#capacity');
+var noticeRooms = noticeForm.querySelector('#room_number');
+var noticeSubmit = noticeForm.querySelector('.form__submit');
+var noticeReset = noticeForm.querySelector('.form__reset');
+var inputError = [];
 
 
 var activateForm = function (flag) {
@@ -189,20 +199,6 @@ var fillAddressInput = function () {
 
 };
 
-
-var noticeTitle = noticeForm.querySelector('#title');
-var noticePrice = noticeForm.querySelector('#price');
-var noticeType = noticeForm.querySelector('#type');
-var noticeCheckIn = noticeForm.querySelector('#timein');
-var noticeCheckOut = noticeForm.querySelector('#timeout');
-var noticeGuests = noticeForm.querySelector('#capacity');
-var noticeRooms = noticeForm.querySelector('#room_number');
-var noticeSubmit = noticeForm.querySelector('.form__submit');
-var noticeReset = noticeForm.querySelector('.form__reset');
-var inputError = [];
-
-
-
 var minPriceTypes = {
   'bungalo': 0,
   'flat': 1000,
@@ -217,7 +213,7 @@ var priceValueHandler = function () {
 
 var checkPrice = function () {
   if (noticePrice.validity.rangeUnderflow) {
-    noticePrice.setCustomValidity('Цена не может быть меньше' + noticePrice.min + ' рублей')
+    noticePrice.setCustomValidity('Цена не может быть меньше' + noticePrice.min + ' рублей');
   } else if (noticePrice.validity.rangeOverflow) {
     noticePrice.setCustomValidity('Цена не может быть больше 1 000 000 рублей');
   } else if (noticePrice.validity.valueMissing) {
@@ -225,11 +221,11 @@ var checkPrice = function () {
   } else {
     noticePrice.setCustomValidity('');
   }
-}
+};
 
-var checkTitle= function () {
+var checkTitle = function () {
   if (noticeTitle.validity.tooShort) {
-    noticePrice.setCustomValidity('Заголовок должен содержать не менее 30 символов')
+    noticePrice.setCustomValidity('Заголовок должен содержать не менее 30 символов');
   } else if (noticePrice.validity.tooLong) {
     noticePrice.setCustomValidity('Заголовок не должен содержать более 100 сиволов');
   } else if (noticePrice.validity.valueMissing) {
@@ -237,17 +233,13 @@ var checkTitle= function () {
   } else {
     noticePrice.setCustomValidity('');
   }
-}
-
+};
 
 noticeType.addEventListener('change', priceValueHandler);
-
-
 
 var syncInputs = function (firstElement, secondElement) {
   secondElement.value = firstElement.value;
 };
-
 
 var roomsGuestsDependencies = {
   1: ['1'],
@@ -311,29 +303,8 @@ var onMapPinMainClick = function () {
 mapPinMain.addEventListener('mouseup', onMapPinMainClick);
 activateForm(isMapPinClicked);
 
-//
-
-
 noticeReset.addEventListener('click', function (evt) {
   evt.preventDefault();
   noticeForm.reset();
   checkForm();
 });
-
-
-
-/*
-  select = document.getElementById("type"); // Выбираем  select по id
-  value = select.options[0].value; // Значение value для выбранного option
-  text = select.options[select.selectedIndex].text; // Текстовое значение для выбранного option
-  alert("Value: " + value + "\nТекст: " + text); // Вывод алерта для проверки значений
-*/
-
-
-
-
-/*
-var setMinPrice = function () {
-  if
-}
-*/
