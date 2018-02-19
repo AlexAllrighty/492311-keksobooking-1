@@ -223,17 +223,20 @@ var checkPrice = function () {
   }
 };
 
+
 var checkTitle = function () {
   if (noticeTitle.validity.tooShort) {
     noticePrice.setCustomValidity('Заголовок должен содержать не менее 30 символов');
-  } else if (noticePrice.validity.tooLong) {
+  } else if (noticeTitle.validity.tooLong) {
     noticePrice.setCustomValidity('Заголовок не должен содержать более 100 сиволов');
-  } else if (noticePrice.validity.valueMissing) {
+  } else if (noticeTitle.validity.valueMissing) {
     noticePrice.setCustomValidity('Вы не указали заголовок объявления');
   } else {
     noticePrice.setCustomValidity('');
   }
 };
+
+
 
 noticeType.addEventListener('change', priceValueHandler);
 
