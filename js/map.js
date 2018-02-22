@@ -10,7 +10,7 @@
     window.activateForm(flag);
   };
   window.mapPinMain.addEventListener('mousedown', function (evt) {
-    if (!window.map.classList.contains('map--faded')){
+    if (!window.map.classList.contains('map--faded')) {
       window.activatePinMovement(evt);
     }
   });
@@ -19,12 +19,8 @@
     window.renderMapPinBlock();
     window.fillAddressInput();
     window.collectListeners();
-
   };
   window.mapPinMain.addEventListener('mouseup', onMapPinMainClick);
   window.activateForm(isMapPinClicked);
-
-
-
 })();
 
