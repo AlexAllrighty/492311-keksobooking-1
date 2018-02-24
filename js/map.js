@@ -9,14 +9,18 @@
     window.noticeForm.classList.remove('notice__form--disabled');
     window.activateForm(flag);
   };
-
+  window.mapPinMain.addEventListener('mousedown', function (evt) {
+    if (!window.map.classList.contains('map--faded')) {
+      window.activatePinMovement(evt);
+    }
+  });
   var onMapPinMainClick = function () {
     launchPage(true);
     window.renderMapPinBlock();
     window.fillAddressInput();
     window.collectListeners();
   };
-
   window.mapPinMain.addEventListener('mouseup', onMapPinMainClick);
   window.activateForm(isMapPinClicked);
 })();
+
