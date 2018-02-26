@@ -16,10 +16,11 @@
   });
   var onMapPinMainClick = function () {
     launchPage(true);
-    window.renderMapPinBlock();
     window.fillAddressInput();
     window.collectListeners();
+    window.load('https://js.dump.academy/keksobooking/data', window.successHandler, window.errorHandler);
   };
+
   window.mapPinMain.addEventListener('mouseup', onMapPinMainClick);
   window.activateForm(isMapPinClicked);
 })();
