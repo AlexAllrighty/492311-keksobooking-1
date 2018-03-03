@@ -131,7 +131,6 @@
       inputError.push(evt.target);
     }, true);
   };
-
   var resetPage = function () {
     noticeForm.reset();
     mapPinMain.style.left = '50%';
