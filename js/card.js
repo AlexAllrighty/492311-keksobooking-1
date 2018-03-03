@@ -31,7 +31,6 @@
       }
       cardElement.querySelector('.popup__features').innerHTML = '';
       cardElement.querySelector('.popup__features').appendChild(fragment);
-
     };
     renderFeaturesList();
 
@@ -75,5 +74,5 @@
     window.map.insertBefore(fragment, mapFilterContainer);
   };
 
-  
+
 })();
