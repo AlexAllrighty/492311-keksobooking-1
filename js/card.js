@@ -1,15 +1,15 @@
 'use strict';
 
 (function () {
+  var map = document.querySelector('.map');
+  var template = document.querySelector('template').content;
   var fragment = document.createDocumentFragment();
-  window.adList = [];
 
   window.removeCard = function () {
-    if (window.map.contains(window.map.querySelector('.map__card'))) {
-      window.map.removeChild(window.map.querySelector('.map__card'));
+    if (map.contains(map.querySelector('.map__card'))) {
+      map.removeChild(map.querySelector('.map__card'));
     }
   };
-
 
   var createCard = function (element, ad) {
     var cardElement = element.cloneNode(true);
@@ -42,7 +42,6 @@
     cardElement.querySelector('h3').textContent = ad.offer.title;
     cardElement.querySelector('p').querySelector('small').textContent = ad.offer.adress;
     cardElement.querySelector('.popup__price').textContent = ad.offer.price + '\t\u20BD/ночь';
-
     cardElement.querySelector('h4').nextElementSibling.textContent = ad.offer.rooms +
       ' комнаты для ' + ad.offer.guests + ' гостей';
     cardElement.querySelector('h4').nextElementSibling.nextElementSibling.textContent = 'Заезд после ' + ad.offer.checkin + ' выезд до ' + ad.offer.checkout;
@@ -68,12 +67,43 @@
     renderAvatar();
     return cardElement;
   };
-  var template = document.querySelector('template').content;
+
   window.renderCard = function (ad) {
     var cardTemplate = template.querySelector('.map__card');
     var cardTemplateCopied = cardTemplate.cloneNode(true);
     var mapFilterContainer = document.querySelector('.map__filters-container');
     fragment.appendChild(createCard(cardTemplateCopied, ad));
-    window.map.insertBefore(fragment, mapFilterContainer);
+    map.insertBefore(fragment, mapFilterContainer);
   };
+
+
+  //
+
+  function remove() {
+    var card = map.querySelector('.map__card');
+
+    if (card) {
+      var buttonPopupClose = document.querySelector('.popup__close');
+      buttonPopupClose.removeEventListener('click', remove);
+      /*document.removeEventListener('keydown', removeByEsc);*/
+      map.removeChild(card);
+    }
+  }
+
+  window.card1 = {
+    remove: remove
+  };
+
+  /*
+
+  function remove() {
+    var card = selectMap.querySelector('.map__card');
+
+    if (card) {
+      var buttonClose = selectMap.querySelector('.popup__close');
+      buttonClose.removeEventListener('click', remove);
+      document.removeEventListener('keydown', removeByEsc);
+      selectMap.removeChild(card);
+    }
+  }*/
 })();
