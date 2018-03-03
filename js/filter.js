@@ -7,7 +7,6 @@
   };
 
   var allFilters = document.querySelectorAll('.map__filter');
-
   var priceParameters = {
     'low': function (price) {
       return price < priceLimits.low;
