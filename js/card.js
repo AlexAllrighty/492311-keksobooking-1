@@ -2,14 +2,12 @@
 
 (function () {
   var fragment = document.createDocumentFragment();
-  window.adList = [];
 
   window.removeCard = function () {
     if (window.map.contains(window.map.querySelector('.map__card'))) {
       window.map.removeChild(window.map.querySelector('.map__card'));
     }
   };
-
 
   var createCard = function (element, ad) {
     var cardElement = element.cloneNode(true);
@@ -41,7 +39,7 @@
     cardDescription.textContent = ad.offer.description;
     cardElement.querySelector('h3').textContent = ad.offer.title;
     cardElement.querySelector('p').querySelector('small').textContent = ad.offer.adress;
-    cardElement.querySelector('.popup__price').textContent = ad.offer.price + '\t\u20BD/ночь';
+    cardElement.querySelector('.popup__price').textContent = ad.offer.price + ' ₽ ночь';
 
     cardElement.querySelector('h4').nextElementSibling.textContent = ad.offer.rooms +
       ' комнаты для ' + ad.offer.guests + ' гостей';
@@ -76,4 +74,6 @@
     fragment.appendChild(createCard(cardTemplateCopied, ad));
     window.map.insertBefore(fragment, mapFilterContainer);
   };
+
+  
 })();
