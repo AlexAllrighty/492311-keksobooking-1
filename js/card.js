@@ -73,6 +73,4 @@
     fragment.appendChild(createCard(cardTemplateCopied, ad));
     window.map.insertBefore(fragment, mapFilterContainer);
   };
-
-
 })();
