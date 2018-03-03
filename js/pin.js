@@ -9,7 +9,6 @@ window.pin = (function () {
     }
   };
 
-
   var renderMapPin = function (ad) {
     var mapPinTemplate = document.querySelector('template').content.querySelector('.map__pin');
     var mapPin = mapPinTemplate.cloneNode(true);
