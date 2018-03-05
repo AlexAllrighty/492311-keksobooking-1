@@ -48,7 +48,6 @@ window.activatePinMovement = function (evt) {
     };
     window.fillAddressInput(window.newCoords.x, window.newCoords.y, window.mapPinMain);
     window.newCoords = setCoords(window.newCoords);
-
     window.mapPinMain.style.top = (window.newCoords.y) + 'px';
     window.mapPinMain.style.left = (window.newCoords.x) + 'px';
   }
