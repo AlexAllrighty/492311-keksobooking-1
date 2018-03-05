@@ -1,23 +1,23 @@
 'use strict';
 
 (function () {
-  var priceLimits = {
+  var allFilters = document.querySelectorAll('.map__filter');
+  var PRICE_LIMITS = {
     low: 10000,
     high: 50000
   };
-
-  var allFilters = document.querySelectorAll('.map__filter');
-  var priceParameters = {
+  var PriceParameters = {
     'low': function (price) {
-      return price < priceLimits.low;
+      return price < PRICE_LIMITS.low;
     },
     'middle': function (price) {
-      return price >= priceLimits.low && price < priceLimits.high;
+      return price >= PRICE_LIMITS.low && price < PRICE_LIMITS.high;
     },
     'high': function (price) {
-      return price >= priceLimits.high;
+      return price >= PRICE_LIMITS.high;
     }
   };
+
 
   var filterValue = function (array, value, type) {
     return array.filter(function (it) {
@@ -33,11 +33,11 @@
 
   var filterPrice = function (array, value) {
     return array.filter(function (it) {
-      return priceParameters[value](it.offer.price);
+      return PriceParameters[value](it.offer.price);
     });
   };
 
-  window.filters = function (initialArray) {
+  window.filtrate = function (initialArray) {
     var selectedFeatures = document.querySelectorAll('.map__filter-set input[type="checkbox"]:checked');
     var checkedFilters = Array.from(allFilters).filter(function (filter) {
       return filter.value !== 'any';

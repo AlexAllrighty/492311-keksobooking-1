@@ -2,42 +2,42 @@
 
 (function () {
   var noticeForm = document.querySelector('.notice__form');
-  window.map = document.querySelector('.map');
-  window.mapPinMain = document.querySelector('.map__pin--main');
-  window.mapPinMainClickCounter = 0;
+  var errorMessage = 'Ошибка соединения';
+  var errorMessageStyle = 'error-message';
   var isMapPinClicked = false;
   var launchPage = function (flag) {
-    window.map.classList.remove('map--faded');
+    window.util.map.classList.remove('map--faded');
     noticeForm.classList.remove('notice__form--disabled');
-    window.activateForm(flag);
-    for (i = 0; i < window.mapFiltersSelects.length; i++) {
-      window.mapFiltersSelects[i].disabled = false;
-    }
+    window.form.enableForm(flag);
+    window.util.mapFiltersSelects.forEach(function () {
+      window.util.mapFiltersSelects.disabled = false;
+    });
   };
+  var onLoad = function (data) {
+    window.util.ads = data;
+    window.pin.createMapPins(window.util.ads);
+  };
+  var onError = function () {
+    window.util.showResponseMessage(errorMessage, errorMessageStyle);
+  };
+
   var activatePage = function () {
     if (window.mapPinMainClickCounter < 1) {
       launchPage(true);
-      window.fillAddressInput();
-      window.collectListeners();
-      window.load('https://js.dump.academy/keksobooking/data', window.pin.createMapPins, window.errorHandler);
+      window.backend.load(onLoad, onError);
       var filters = window.map.querySelector('.map__filters');
       filters.addEventListener('change', function () {
-        window.debounce(window.load('https://js.dump.academy/keksobooking/data', window.pin.createMapPins));
-        window.removeCard();
+        window.debounce(window.backend.load(onLoad, onError));
+        window.card.removeCard();
       });
     }
     window.mapPinMainClickCounter++;
   };
 
-  window.mapPinMain.addEventListener('mousedown', function (evt) {
+  window.util.mapPinMain.addEventListener('mousedown', function (evt) {
     window.activatePinMovement(evt);
     activatePage();
   });
-  window.activateForm(isMapPinClicked);
-
-  window.mapFiltersSelects = document.querySelectorAll('.map__filters select');
-  for (var i = 0; i < window.mapFiltersSelects.length; i++) {
-    window.mapFiltersSelects[i].disabled = true;
-  }
+  window.form.enableForm(isMapPinClicked);
 })();
 

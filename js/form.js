@@ -1,38 +1,51 @@
 'use strict';
 
 (function () {
-  var noticeForm = document.querySelector('.notice__form');
-  var noticeFormElements = noticeForm.querySelectorAll('.form__element');
-  var noticeTitle = noticeForm.querySelector('#title');
-  var noticePrice = noticeForm.querySelector('#price');
-  var noticeType = noticeForm.querySelector('#type');
-  var noticeCheckIn = noticeForm.querySelector('#timein');
-  var noticeCheckOut = noticeForm.querySelector('#timeout');
-  var noticeGuests = noticeForm.querySelector('#capacity');
-  var noticeRooms = noticeForm.querySelector('#room_number');
-  var noticeReset = noticeForm.querySelector('.form__reset');
-  var noticeAddress = document.querySelector('#address');
-  var mapPinMain = document.querySelector('.map__pin--main');
+  var noticeFormElements = window.util.noticeForm.querySelectorAll('.form__element');
+  var noticeTitle = window.util.noticeForm.querySelector('#title');
+  var noticePrice = window.util.noticeForm.querySelector('#price');
+  var noticeType = window.util.noticeForm.querySelector('#type');
+  var noticeCheckIn = window.util.noticeForm.querySelector('#timein');
+  var noticeCheckOut = window.util.noticeForm.querySelector('#timeout');
+  var noticeGuests = window.util.noticeForm.querySelector('#capacity');
+  var noticeRooms = window.util.noticeForm.querySelector('#room_number');
+  var noticeReset = window.util.noticeForm.querySelector('.form__reset');
+  var noticeAddress = window.util.noticeForm.querySelector('#address');
   var mapPinMainPositionX;
   var mapPinMainPositionY;
   var inputError = [];
-
+  var successMessage = 'Ваше объявление отправлено';
+  var errorMessage = 'Ошибка при отправке формы';
+  var errorMessageStyle = 'error-message';
+  var successMessageStyle = 'success-message';
+  var MinPriceTypes = {
+    'bungalo': 0,
+    'flat': 1000,
+    'house': 5000,
+    'palace': 10000
+  };
+  var RoomsGuestsDependencies = {
+    1: ['1'],
+    2: ['1', '2'],
+    3: ['1', '2', '3'],
+    100: ['0']
+  };
   var enableForm = function (flag) {
     for (var i = 0; i < noticeFormElements.length; i++) {
       noticeFormElements[i].disabled = !flag;
     }
   };
-  window.activateForm = function (flag) {
-    enableForm(flag);
-  };
-  window.fillAddressInput = function () {
+
+  var fillAddressInput = function () {
     var getElementPosition = function (posX, posY, obj) {
       posX = obj.offsetLeft + 30;
       posY = obj.offsetTop + 40;
       return posX + ', ' + posY;
     };
-    noticeAddress.value = getElementPosition(mapPinMainPositionX, mapPinMainPositionY, mapPinMain);
+    noticeAddress.value = getElementPosition(mapPinMainPositionX, mapPinMainPositionY, window.util.mapPinMain);
   };
+  fillAddressInput();
+
   var checkTitle = function () {
     if (noticeTitle.validity.tooShort) {
       noticeTitle.setCustomValidity('Заголовок должен содержать не менее 30 символов');
@@ -44,14 +57,9 @@
       noticeTitle.setCustomValidity('');
     }
   };
-  var minPriceTypes = {
-    'bungalo': 0,
-    'flat': 1000,
-    'house': 5000,
-    'palace': 10000
-  };
+
   var priceValueHandler = function () {
-    noticePrice.min = minPriceTypes[noticeType.value];
+    noticePrice.min = MinPriceTypes[noticeType.value];
   };
   noticeType.addEventListener('change', priceValueHandler);
 
@@ -66,88 +74,61 @@
       noticePrice.setCustomValidity('');
     }
   };
+  checkPrice();
+
   var syncInputs = function (firstElement, secondElement) {
     secondElement.value = firstElement.value;
   };
-  var roomsGuestsDependencies = {
-    1: ['1'],
-    2: ['1', '2'],
-    3: ['1', '2', '3'],
-    100: ['0']
-  };
   var roomsValueHandler = function () {
-    var select = roomsGuestsDependencies[noticeRooms.value];
+    var select = RoomsGuestsDependencies[noticeRooms.value];
     noticeGuests.value = (noticeRooms.value === '100') ? '0' : noticeRooms.value;
-
     [].slice.call(noticeGuests.options).forEach(function (option) {
       option.disabled = !select.includes(option.value);
     });
   };
   roomsValueHandler();
-  window.collectListeners = function () {
-    noticeType.addEventListener('change', priceValueHandler);
 
-    noticeCheckIn.addEventListener('change', function () {
-      syncInputs(noticeCheckIn, noticeCheckOut);
-    });
+  noticeType.addEventListener('change', priceValueHandler);
 
-    noticeCheckOut.addEventListener('change', function () {
-      syncInputs(noticeCheckOut, noticeCheckIn);
-    });
+  noticeCheckIn.addEventListener('change', function () {
+    syncInputs(noticeCheckIn, noticeCheckOut);
+  });
 
-    noticeRooms.addEventListener('change', roomsValueHandler);
+  noticeCheckOut.addEventListener('change', function () {
+    syncInputs(noticeCheckOut, noticeCheckIn);
+  });
 
-    noticeForm.addEventListener('submit', function (evt) {
-      var body = document.querySelector('body');
-      inputError.forEach(function (input) {
-        input.style.borderColor = '';
-        input.setCustomValidity('');
-      });
-      window.save(new FormData(noticeForm), function () {
-        resetPage();
-        var responseMessage = document.createElement('div');
-        responseMessage.classList.add('success-message');
-        responseMessage.textContent = 'Объявление отправлено';
-        body.appendChild(responseMessage);
-        setTimeout(function () {
-          body.removeChild(responseMessage);
-        }, 3000);
-      }, function (response) {
-        var responseMessage = document.createElement('div');
-        responseMessage.classList.add('error-message');
-        responseMessage.textContent = 'Объявление не отправлено(' + response + ')';
-        body.appendChild(responseMessage);
-        setTimeout(function () {
-          body.removeChild(responseMessage);
-        }, 3000);
-      });
-      evt.preventDefault();
-    });
-
-    noticeForm.addEventListener('invalid', function (evt) {
-      checkPrice();
-      checkTitle();
-      evt.target.style.borderColor = 'red';
-      inputError.push(evt.target);
-    }, true);
+  noticeRooms.addEventListener('change', roomsValueHandler);
+  var onError = function () {
+    window.util.showResponseMessage(errorMessage, errorMessageStyle);
   };
-  var resetPage = function () {
-    noticeForm.reset();
-    mapPinMain.style.left = '50%';
-    mapPinMain.style.top = '375px';
-    window.fillAddressInput();
-    enableForm(false); // сделать функцию
-    noticeForm.classList.add('notice__form--disabled');
-    window.removePins();
-    window.removeCard();
-    window.map.classList.add('map--faded');
-    window.mapPinMainClickCounter = 0;
-    for (var i = 0; i < window.mapFiltersSelects.length; i++) {
-      window.mapFiltersSelects[i].disabled = true;
-    }
+
+  var onLoad = function () {
+    window.util.showResponseMessage(successMessage, successMessageStyle);
+    window.util.resetPage();
   };
+
+  window.util.noticeForm.addEventListener('submit', function (evt) {
+    inputError.forEach(function (input) {
+      input.style.borderColor = '';
+      input.setCustomValidity('');
+    });
+    window.backend.save(new FormData(window.util.noticeForm), onLoad, onError);
+    evt.preventDefault();
+  });
+
+  window.util.noticeForm.addEventListener('invalid', function (evt) {
+    checkPrice();
+    checkTitle();
+    evt.target.style.borderColor = 'red';
+    inputError.push(evt.target);
+  }, true);
   noticeReset.addEventListener('click', function (evt) {
     evt.preventDefault();
-    resetPage();
+    window.util.resetPage();
   });
+  window.form = {
+    enableForm: enableForm,
+    fillAddressInput: fillAddressInput
+  };
 })();
