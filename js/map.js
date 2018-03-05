@@ -1,27 +1,44 @@
 'use strict';
 
 (function () {
-  window.map = document.querySelector('.map');
-  window.mapPinMain = document.querySelector('.map__pin--main');
+  var noticeForm = document.querySelector('.notice__form');
+  var errorMessage = 'Ошибка соединения';
+  var errorMessageStyle = 'error-message';
   var isMapPinClicked = false;
   var launchPage = function (flag) {
-    window.map.classList.remove('map--faded');
-    window.noticeForm.classList.remove('notice__form--disabled');
-    window.activateForm(flag);
+    window.util.map.classList.remove('map--faded');
+    noticeForm.classList.remove('notice__form--disabled');
+    window.form.enableForm(flag);
+    window.util.mapFiltersSelects.forEach(function () {
+      window.util.mapFiltersSelects.disabled = false;
+    });
   };
-  window.mapPinMain.addEventListener('mousedown', function (evt) {
-    if (!window.map.classList.contains('map--faded')) {
-      window.activatePinMovement(evt);
-    }
-  });
-  var onMapPinMainClick = function () {
-    launchPage(true);
-    window.fillAddressInput();
-    window.collectListeners();
-    window.load('https://js.dump.academy/keksobooking/data', window.successHandler, window.errorHandler);
+  var onLoad = function (data) {
+    window.util.ads = data;
+    window.pin.createMapPins(window.util.ads);
   };
 
-  window.mapPinMain.addEventListener('mouseup', onMapPinMainClick);
-  window.activateForm(isMapPinClicked);
+  var onError = function () {
+    window.util.showResponseMessage(errorMessage, errorMessageStyle);
+  };
+
+  var activatePage = function () {
+    if (window.mapPinMainClickCounter < 1) {
+      launchPage(true);
+      window.backend.load(onLoad, onError);
+      var filters = window.map.querySelector('.map__filters');
+      filters.addEventListener('change', function () {
+        window.debounce(window.backend.load(onLoad, onError));
+        window.card.removeCard();
+      });
+    }
+    window.mapPinMainClickCounter++;
+  };
+
+  window.util.mapPinMain.addEventListener('mousedown', function (evt) {
+    window.activatePinMovement(evt);
+    activatePage();
+  });
+  window.form.enableForm(isMapPinClicked);
 })();
 
