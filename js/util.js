@@ -1,6 +1,5 @@
 'use strict';
 
-
 var map = document.querySelector('.map');
 var mapPinMain = document.querySelector('.map__pin--main');
 var noticeForm = document.querySelector('.notice__form');
@@ -17,7 +16,6 @@ var showResponseMessage = function (message, messageStyle) {
     body.removeChild(responseMessage);
   }, 3000);
 };
-
 
 var resetPage = function () {
   noticeForm.reset();

@@ -17,7 +17,6 @@
     window.util.ads = data;
     window.pin.createMapPins(window.util.ads);
   };
-
   var onError = function () {
     window.util.showResponseMessage(errorMessage, errorMessageStyle);
   };
