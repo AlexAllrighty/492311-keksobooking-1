@@ -52,7 +52,6 @@ window.activatePinMovement = function (evt) {
     window.mapPinMain.style.top = (window.newCoords.y) + 'px';
     window.mapPinMain.style.left = (window.newCoords.x) + 'px';
   }
-
   function onMouseUp(upEvt) {
     upEvt.preventDefault();
 
