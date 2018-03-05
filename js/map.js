@@ -9,9 +9,7 @@
     window.util.map.classList.remove('map--faded');
     noticeForm.classList.remove('notice__form--disabled');
     window.form.enableForm(flag);
-    window.util.mapFiltersSelects.forEach(function () {
-      window.util.mapFiltersSelects.disabled = false;
-    });
+    window.util.disableFilters(false);
   };
   var onLoad = function (data) {
     window.util.ads = data;
@@ -25,7 +23,7 @@
     if (window.mapPinMainClickCounter < 1) {
       launchPage(true);
       window.backend.load(onLoad, onError);
-      var filters = window.map.querySelector('.map__filters');
+      var filters = window.util.map.querySelector('.map__filters');
       filters.addEventListener('change', function () {
         window.debounce(window.backend.load(onLoad, onError));
         window.card.removeCard();

@@ -60,8 +60,8 @@
 
   var removeCard = function () {
     var card = document.querySelector('.map__card');
-    if (window.map.contains(card)) {
-      window.map.removeChild(card);
+    if (window.util.map.contains(card)) {
+      window.util.map.removeChild(card);
     }
   };
 

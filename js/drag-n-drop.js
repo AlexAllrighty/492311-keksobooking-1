@@ -5,7 +5,7 @@
   var MAIN_PIN_MIN_Y = 150;
   var MAIN_PIN_MAX_Y = 500;
   var minX = MAIN_PIN_OFFSET_X;
-  var maxX = document.querySelector('.map').offsetWidth - MAIN_PIN_OFFSET_X;
+  var maxX = window.util.map.offsetWidth - MAIN_PIN_OFFSET_X;
   var minY = MAIN_PIN_MIN_Y - MAIN_PIN_OFFSET_Y;
   var maxY = MAIN_PIN_MAX_Y - MAIN_PIN_OFFSET_Y;
   var setCoords = function (coords) {
@@ -38,8 +38,8 @@
         y: moveEvt.clientY
       };
       var newCoords = {
-        x: window.mapPinMain.offsetLeft - shift.x,
-        y: window.mapPinMain.offsetTop - shift.y
+        x: window.util.mapPinMain.offsetLeft - shift.x,
+        y: window.util.mapPinMain.offsetTop - shift.y
       };
       window.form.fillAddressInput(newCoords.x, newCoords.y, window.util.mapPinMain);
       newCoords = setCoords(newCoords);
