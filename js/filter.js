@@ -19,7 +19,6 @@
     }
   };
 
-
   var filterValue = function (array, value, type) {
     return array.filter(function (it) {
       return it.offer[type].toString() === value;
