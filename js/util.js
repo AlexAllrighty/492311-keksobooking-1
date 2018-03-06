@@ -10,7 +10,6 @@
       elem.disabled = flag;
     });
   };
-  
   disableFilters(true);
   window.mapPinMainClickCounter = 0;
 
