@@ -6,11 +6,11 @@
   var noticeForm = document.querySelector('.notice__form');
   var mapFiltersSelects = document.querySelectorAll('.map__filters select');
   var disableFilters = function (flag) {
-    for (var i = 0; i < mapFiltersSelects.length; i++) {
-      mapFiltersSelects[i].disabled = flag;
-    }
+    mapFiltersSelects.forEach(function (elem) {
+      elem.disabled = flag;
+    });
   };
-
+  
   disableFilters(true);
   window.mapPinMainClickCounter = 0;
 

@@ -6,6 +6,7 @@
     low: 10000,
     high: 50000
   };
+
   var PriceParameters = {
     'low': function (price) {
       return price < PRICE_LIMITS.low;

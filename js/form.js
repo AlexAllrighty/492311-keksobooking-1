@@ -2,7 +2,6 @@
 
 (function () {
   var noticeFormElements = window.util.noticeForm.querySelectorAll('.form__element');
-  var noticeTitle = window.util.noticeForm.querySelector('#title');
   var noticePrice = window.util.noticeForm.querySelector('#price');
   var noticeType = window.util.noticeForm.querySelector('#type');
   var noticeCheckIn = window.util.noticeForm.querySelector('#timein');
@@ -46,35 +45,12 @@
   };
   fillAddressInput();
 
-  var checkTitle = function () {
-    if (noticeTitle.validity.tooShort) {
-      noticeTitle.setCustomValidity('Заголовок должен содержать не менее 30 символов');
-    } else if (noticeTitle.validity.tooLong) {
-      noticeTitle.setCustomValidity('Заголовок не должен содержать более 100 сиволов');
-    } else if (noticeTitle.validity.valueMissing) {
-      noticeTitle.setCustomValidity('Вы не указали заголовок объявления');
-    } else {
-      noticeTitle.setCustomValidity('');
-    }
-  };
-
   var priceValueHandler = function () {
     noticePrice.min = MinPriceTypes[noticeType.value];
   };
-  noticeType.addEventListener('change', priceValueHandler);
 
-  var checkPrice = function () {
-    if (noticePrice.validity.rangeUnderflow) {
-      noticePrice.setCustomValidity('Цена не может быть меньше' + noticePrice.min + ' рублей');
-    } else if (noticePrice.validity.rangeOverflow) {
-      noticePrice.setCustomValidity('Цена не может быть больше 1 000 000 рублей');
-    } else if (noticePrice.validity.valueMissing) {
-      noticePrice.setCustomValidity('Вы не указали цену');
-    } else {
-      noticePrice.setCustomValidity('');
-    }
-  };
-  checkPrice();
+  priceValueHandler();
+  noticeType.addEventListener('change', priceValueHandler);
 
   var syncInputs = function (firstElement, secondElement) {
     secondElement.value = firstElement.value;
@@ -118,8 +94,6 @@
   });
 
   window.util.noticeForm.addEventListener('invalid', function (evt) {
-    checkPrice();
-    checkTitle();
     evt.target.style.borderColor = 'red';
     inputError.push(evt.target);
   }, true);
